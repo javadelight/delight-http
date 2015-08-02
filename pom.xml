@@ -5,7 +5,7 @@
 	<version>0.0.11</version>
 	<description>A general API for building HTTP servers.
 	</description>
-	<url>https://github.com/mxro/http-server</url>
+	<url>https://github.com/javadelight/delight-http</url>
 
 	<properties>
 		<module.gwtVersion>2.5.1</module.gwtVersion>
@@ -352,16 +352,7 @@
 		</extensions>
 	</build>
 
-	<distributionManagement>
-		<repository>
-			<id>appjangle-releases</id>
-			<url>${repos.appjangle-releases}</url>
-		</repository>
-		<snapshotRepository>
-			<id>appjangle-snapshots</id>
-			<url>${repos.appjangle-snapshots}</url>
-		</snapshotRepository>
-	</distributionManagement>
+	
 
 	<repositories>
 		<repository>
@@ -386,11 +377,6 @@
 		</developer>
 	</developers>
 
-	<scm>
-		<connection>scm:git:git@github.com:mxro/http-server.git</connection>
-		<url>https://github.com/mxro/http-server</url>
-		<developerConnection>scm:git:git@github.com:mxro/http-server.git
-		</developerConnection>
-	</scm>
+	
 
 </project>
