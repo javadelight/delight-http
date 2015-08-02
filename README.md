@@ -1,9 +1,11 @@
 delight-http
 ===========
 
+[![Build Status](https://travis-ci.org/javadelight/delight-http.svg)](https://travis-ci.org/javadelight/delight-http)
+
 API and utilities for asynchronous HTTP servers.
 
--> [Maven Project Reports](http://modules.appjangle.com/http-server/latest/project-reports.html)
+-> [Maven Project Reports](http://modules.appjangle.com/delight-http/latest/project-reports.html)
 
 ## Also See
 
