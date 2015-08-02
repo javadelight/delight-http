@@ -1,4 +1,4 @@
-http-server
+delight-http
 ===========
 
 API and utilities for asynchronous HTTP servers.
