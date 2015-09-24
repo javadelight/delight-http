@@ -3,7 +3,7 @@ package de.mxro.httpserver.internal.services;
 import delight.async.callbacks.SimpleCallback;
 import delight.concurrency.jre.ConcurrencyJre;
 import delight.concurrency.wrappers.SimpleExecutor;
-import delight.concurrency.wrappers.SimpleExecutor.WhenExecutorShutDown;
+import delight.concurrency.wrappers.WhenExecutorShutDown;
 import delight.functional.Closure;
 import delight.functional.SuccessFail;
 
