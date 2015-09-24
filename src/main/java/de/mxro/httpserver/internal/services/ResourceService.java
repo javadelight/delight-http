@@ -97,7 +97,7 @@ public class ResourceService implements HttpService {
         this.executor.shutdown(new WhenExecutorShutDown() {
 
             @Override
-            public void thenDo() {
+            public void onSuccess() {
                 callback.onSuccess();
             }
 
