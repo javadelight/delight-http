@@ -38,6 +38,8 @@ public class WebResourceProvider implements ResourceProvider {
             mimetype = "text/css";
         } else if (path.endsWith(".rpc")) {
             mimetype = "text/plain";
+        } else if (path.endsWith(".svg")) {
+            mimetype = "image/svg+xml";
         }
 
         final String closedMimetype = mimetype;
