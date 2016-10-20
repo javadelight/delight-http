@@ -12,7 +12,7 @@ import de.mxro.httpserver.HttpServer;
 import de.mxro.httpserver.HttpService;
 import de.mxro.httpserver.Request;
 import de.mxro.httpserver.Response;
-import de.mxro.httpserver.internal.services.RequestTimeEnforcerService;
+import de.mxro.httpserver.internal.services.requesttimes.RequestTimeEnforcerService;
 
 public class TestEnforceTimeout {
 

@@ -13,12 +13,12 @@ import de.mxro.httpserver.internal.services.EchoService;
 import de.mxro.httpserver.internal.services.FilterService;
 import de.mxro.httpserver.internal.services.PropertiesAsJSONService;
 import de.mxro.httpserver.internal.services.ProxyService;
-import de.mxro.httpserver.internal.services.RequestTimeEnforcerService;
 import de.mxro.httpserver.internal.services.ResourceService;
 import de.mxro.httpserver.internal.services.SafeShutdownGuard;
 import de.mxro.httpserver.internal.services.ShutdownService;
 import de.mxro.httpserver.internal.services.StaticDataService;
-import de.mxro.httpserver.internal.services.TrackRequestTimeService;
+import de.mxro.httpserver.internal.services.requesttimes.RequestTimeEnforcerService;
+import de.mxro.httpserver.internal.services.requesttimes.TrackRequestTimeService;
 import de.mxro.httpserver.resources.ResourceProvider;
 import de.mxro.server.ServerComponent;
 

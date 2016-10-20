@@ -1,4 +1,4 @@
-package de.mxro.httpserver.internal.services;
+package de.mxro.httpserver.internal.services.requesttimes;
 
 import delight.functional.Closure;
 import delight.functional.SuccessFail;

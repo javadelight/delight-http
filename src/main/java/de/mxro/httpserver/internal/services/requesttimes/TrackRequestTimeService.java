@@ -1,4 +1,4 @@
-package de.mxro.httpserver.internal.services;
+package de.mxro.httpserver.internal.services.requesttimes;
 
 import delight.async.callbacks.SimpleCallback;
 import delight.async.properties.PropertyNode;
