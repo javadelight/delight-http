@@ -8,6 +8,7 @@ import java.util.Map;
 
 import de.mxro.httpserver.HttpService;
 import de.mxro.httpserver.Request;
+import de.mxro.httpserver.internal.services.ConcurrentWorkerThreadService;
 import de.mxro.httpserver.internal.services.DispatchService;
 import de.mxro.httpserver.internal.services.EchoService;
 import de.mxro.httpserver.internal.services.FilterService;
@@ -96,6 +97,10 @@ public final class Services {
     public static HttpService shutdown(final String secret, final ServerComponent serverToShutdown,
             final Value<ServerComponent> ownServer) {
         return new ShutdownService(secret, serverToShutdown, ownServer);
+    }
+
+    public static HttpService withParallelWorkerThreads(final int maxWorkers, final HttpService decorated) {
+        return new ConcurrentWorkerThreadService(maxWorkers, decorated);
     }
 
 }
