@@ -46,6 +46,10 @@ public class ConcurrentWorkerThreadService implements HttpService {
     @Override
     public void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
 
+        if (executor.pendingTasks() > 200) {
+
+        }
+
         executor.execute(new Callable<Object>() {
 
             @Override
