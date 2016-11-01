@@ -99,8 +99,9 @@ public final class Services {
         return new ShutdownService(secret, serverToShutdown, ownServer);
     }
 
-    public static HttpService withParallelWorkerThreads(final int maxWorkers, final HttpService decorated) {
-        return new ConcurrentWorkerThreadService(maxWorkers, decorated);
+    public static HttpService withParallelWorkerThreads(final String threadName, final int maxWorkers,
+            final HttpService decorated) {
+        return new ConcurrentWorkerThreadService(threadName, maxWorkers, decorated);
     }
 
 }

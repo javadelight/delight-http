@@ -16,6 +16,7 @@ public class ConcurrentWorkerThreadService implements HttpService {
     private final int maxThreads;
     private final HttpService decorated;
     private SimpleExecutor executor;
+    private final String threadName;
 
     @Override
     public void stop(final SimpleCallback callback) {
@@ -34,7 +35,7 @@ public class ConcurrentWorkerThreadService implements HttpService {
     @Override
     public void start(final SimpleCallback callback) {
 
-        executor = new JreConcurrency().newExecutor().newParallelExecutor(maxThreads, this);
+        executor = new JreConcurrency().newExecutor().newParallelExecutor(maxThreads, threadName + "@" + this);
 
         decorated.start(callback);
     }
@@ -52,8 +53,9 @@ public class ConcurrentWorkerThreadService implements HttpService {
 
     }
 
-    public ConcurrentWorkerThreadService(final int maxThreads, final HttpService decorated) {
+    public ConcurrentWorkerThreadService(final String threadName, final int maxThreads, final HttpService decorated) {
         super();
+        this.threadName = threadName;
         this.maxThreads = maxThreads;
         this.decorated = decorated;
     }

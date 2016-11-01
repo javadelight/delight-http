@@ -15,6 +15,8 @@ import de.mxro.httpserver.Response;
 
 public final class DispatchService implements HttpService {
 
+    private static final boolean ENABLE_LOG = true;
+
     private final Map<String, HttpService> serviceMap;
 
     @Override
@@ -55,10 +57,18 @@ public final class DispatchService implements HttpService {
             return;
         }
 
+        if (ENABLE_LOG) {
+            System.out.println(DispatchService.class + ": Stopping service " + services.get(serviceIdx));
+        }
+
         services.get(serviceIdx).stop(new SimpleCallback() {
 
             @Override
             public void onSuccess() {
+
+                if (ENABLE_LOG) {
+                    System.out.println(DispatchService.class + ": Stopped service " + services.get(serviceIdx));
+                }
                 stop(services, serviceIdx + 1, callback);
             }
 
