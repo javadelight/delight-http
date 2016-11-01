@@ -47,7 +47,8 @@ public class ConcurrentWorkerThreadService implements HttpService {
     public void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
 
         if (executor.pendingTasks() > 200) {
-
+            System.out.println(this + ": WARNING thread queue is getting long for " + threadName
+                    + ". Currently waiting: " + executor.pendingTasks());
         }
 
         executor.execute(new Callable<Object>() {
