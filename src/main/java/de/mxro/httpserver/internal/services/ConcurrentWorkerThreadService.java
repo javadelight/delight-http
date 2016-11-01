@@ -17,6 +17,7 @@ public class ConcurrentWorkerThreadService implements HttpService {
     private final HttpService decorated;
     private SimpleExecutor executor;
     private final String threadName;
+    private final int taskTimeout;
 
     @Override
     public void stop(final SimpleCallback callback) {
@@ -53,11 +54,13 @@ public class ConcurrentWorkerThreadService implements HttpService {
 
     }
 
-    public ConcurrentWorkerThreadService(final String threadName, final int maxThreads, final HttpService decorated) {
+    public ConcurrentWorkerThreadService(final String threadName, final int maxThreads, final int taskTimeout,
+            final HttpService decorated) {
         super();
         this.threadName = threadName;
         this.maxThreads = maxThreads;
         this.decorated = decorated;
+        this.taskTimeout = taskTimeout;
     }
 
 }
