@@ -67,6 +67,11 @@ public class RequestTimeEnforcerService implements HttpService {
     }
 
     @Override
+    public String toString() {
+        return super.toString() + " wraps " + this.decorated;
+    }
+
+    @Override
     public void start(final SimpleCallback callback) {
         this.thread.setName(this.getClass() + "-watching-" + decorated.getClass());
         this.thread.setPriority(Thread.MIN_PRIORITY);
