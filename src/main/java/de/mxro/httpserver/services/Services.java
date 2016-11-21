@@ -68,6 +68,17 @@ public final class Services {
     }
 
     /**
+     * A service which returns what was sent to it with a delay.
+     * 
+     * @return
+     */
+    public final static HttpService delayedEcho(final int delayInMs) {
+        final EchoService echoService = new EchoService();
+        echoService.setDelay(delayInMs);
+        return echoService;
+    }
+
+    /**
      * Allows to serve the same byte array for every request. Useful for
      * robots.txt etc.
      * 

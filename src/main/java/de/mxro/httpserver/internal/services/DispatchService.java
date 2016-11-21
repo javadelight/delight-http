@@ -15,7 +15,7 @@ import de.mxro.httpserver.Response;
 
 public final class DispatchService implements HttpService {
 
-    private static final boolean ENABLE_LOG = true;
+    private static final boolean ENABLE_LOG = false;
 
     private final Map<String, HttpService> serviceMap;
 

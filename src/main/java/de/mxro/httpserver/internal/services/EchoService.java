@@ -10,6 +10,8 @@ import de.mxro.httpserver.Response;
 
 public class EchoService implements HttpService {
 
+    int delay = 0;
+
     @Override
     public void stop(final SimpleCallback callback) {
         callback.onSuccess();
@@ -20,8 +22,20 @@ public class EchoService implements HttpService {
         callback.onSuccess();
     }
 
+    public void setDelay(final int delay) {
+        this.delay = delay;
+    }
+
     @Override
     public void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
+
+        if (delay > 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (final InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         response.setResponseCode(200);
         response.setContent(request.getData());

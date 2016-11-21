@@ -7,8 +7,6 @@ import delight.concurrency.wrappers.SimpleExecutor;
 import delight.functional.Closure;
 import delight.functional.SuccessFail;
 
-import java.util.concurrent.Callable;
-
 import de.mxro.httpserver.HttpService;
 import de.mxro.httpserver.Request;
 import de.mxro.httpserver.Response;
@@ -51,15 +49,21 @@ public class ConcurrentWorkerThreadService implements HttpService {
                     + ". Currently waiting: " + executor.pendingTasks());
         }
 
-        executor.execute(new Callable<Object>() {
+        // System.out.println(threadName + ">trigger");
+
+        executor.execute(new Runnable() {
 
             @Override
-            public Object call() throws Exception {
+            public void run() {
+                // final long time = System.currentTimeMillis();
+                // System.out.println(threadName + ">run");
                 decorated.process(request, response, callback);
-                return null;
+
             }
 
         }, this.taskTimeout);
+
+        // System.out.println(threadName + ">queued");
 
     }
 
