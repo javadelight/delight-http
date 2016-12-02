@@ -37,6 +37,11 @@ public final class Services {
         return new RequestTimeEnforcerService(maxCallTimeInMs, decoratedService);
     }
 
+    public static HttpService withParallelWorkerThreads(final String threadName, final int maxWorkers,
+            final int timeout, final HttpService decorated) {
+        return new ConcurrentWorkerThreadService(threadName, maxWorkers, timeout, decorated);
+    }
+
     /**
      * <p>
      * Create a service, which renders the provided properties.
@@ -108,11 +113,6 @@ public final class Services {
     public static HttpService shutdown(final String secret, final ServerComponent serverToShutdown,
             final Value<ServerComponent> ownServer) {
         return new ShutdownService(secret, serverToShutdown, ownServer);
-    }
-
-    public static HttpService withParallelWorkerThreads(final String threadName, final int maxWorkers,
-            final int timeout, final HttpService decorated) {
-        return new ConcurrentWorkerThreadService(threadName, maxWorkers, timeout, decorated);
     }
 
 }

@@ -49,21 +49,33 @@ public class ConcurrentWorkerThreadService implements HttpService {
                     + ". Currently waiting: " + executor.pendingTasks());
         }
 
-        // System.out.println(threadName + ">trigger");
-
         executor.execute(new Runnable() {
 
             @Override
             public void run() {
-                // final long time = System.currentTimeMillis();
-                // System.out.println(threadName + ">run");
+                // System.out.println("start");
                 decorated.process(request, response, callback);
+                // System.out.println("stop");
 
             }
 
-        }, this.taskTimeout);
+        }, this.taskTimeout, new Runnable() {
 
-        // System.out.println(threadName + ">queued");
+            @Override
+            public void run() {
+                System.err.println(this + ": Processing of service timed out. Service: " + decorated);
+
+                response.setResponseCode(524);
+                response.setMimeType("text/plain");
+                response.setContent(
+                        "The call could not be completed since the thread ran longer than the maximum allowed time. Service: "
+                                + decorated);
+
+                callback.apply(SuccessFail.success());
+
+            }
+
+        });
 
     }
 

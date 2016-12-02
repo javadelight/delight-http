@@ -1,7 +1,11 @@
 package de.mxro.httpserver.internal.services.requesttimes;
 
 import delight.async.callbacks.SimpleCallback;
+import delight.concurrency.jre.JreConcurrency;
+import delight.concurrency.schedule.timeout.TimeoutWatcher;
+import delight.concurrency.wrappers.SimpleAtomicBoolean;
 import delight.functional.Closure;
+import delight.functional.Function;
 import delight.functional.SuccessFail;
 
 import de.mxro.httpserver.HttpService;
@@ -12,27 +16,65 @@ import de.mxro.service.callbacks.ShutdownCallback;
 public class RequestTimeEnforcerService implements HttpService {
 
     private final HttpService decorated;
-    private final RequestTimeEnforcementThread thread;
+
+    private final TimeoutWatcher timeoutWatcher;
+    private final long timeout;
 
     @Override
     public void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
 
-        final RequestTimeEntry entry = thread.logRequest(request, response, callback);
+        final SimpleAtomicBoolean isCompleted = new JreConcurrency().newAtomicBoolean(false);
+        final SimpleAtomicBoolean isFailed = new JreConcurrency().newAtomicBoolean(false);
+
+        timeoutWatcher.watch((int) timeout, new Function<Void, Boolean>() {
+
+            @Override
+            public Boolean apply(final Void input) {
+                return isCompleted.get();
+            }
+
+        }, new Runnable() {
+
+            @Override
+            public void run() {
+                isFailed.set(true);
+                System.err.println(RequestTimeEnforcerService.this + ": Message not processed in timeout: " + request);
+                response.setResponseCode(524);
+                response.setMimeType("text/plain");
+                response.setContent(
+                        "The call could not be completed since it took longer than the maximum allowed time. Service: "
+                                + decorated);
+                new JreConcurrency().newTimer().scheduleOnce(1, new Runnable() {
+
+                    @Override
+                    public void run() {
+                        callback.apply(SuccessFail.success());
+                    }
+
+                });
+
+            }
+
+        });
 
         decorated.process(request, response, new Closure<SuccessFail>() {
 
             @Override
             public void apply(final SuccessFail o) {
-                if (thread.logSuccess(entry)) {
-                    callback.apply(o);
+                if (isFailed.get()) {
+                    System.err.println(RequestTimeEnforcerService.this
+                            + ": Trying to call callback for already timed out message: " + request);
                     return;
                 }
 
-                // callback already called
-                throw new IllegalStateException(
-                        "Response for service could not be sent since service was timed out OR callback was called twice.\n"
-                                + "  Decorated Service: " + decorated + "\n" + "  Request: " + request + "\n"
-                                + "  Response: " + response + "\n" + "  Callback: " + callback);
+                if (isCompleted.get()) {
+                    System.err.println(RequestTimeEnforcerService.this + ": Trying to call callback twice for message: "
+                            + request);
+                    return;
+                }
+
+                isCompleted.set(true);
+                callback.apply(o);
             }
         });
 
@@ -45,10 +87,7 @@ public class RequestTimeEnforcerService implements HttpService {
 
             @Override
             public void onSuccess() {
-
-                thread.shutdown();
-                callback.onSuccess();
-
+                timeoutWatcher.shutdown(callback);
             }
 
             @Override
@@ -63,7 +102,8 @@ public class RequestTimeEnforcerService implements HttpService {
         super();
 
         this.decorated = decorated;
-        this.thread = new RequestTimeEnforcementThread(maxTime);
+        this.timeoutWatcher = new TimeoutWatcher(new JreConcurrency());
+        this.timeout = maxTime;
     }
 
     @Override
@@ -73,9 +113,7 @@ public class RequestTimeEnforcerService implements HttpService {
 
     @Override
     public void start(final SimpleCallback callback) {
-        this.thread.setName(this.getClass() + "-watching-" + decorated.getClass());
-        this.thread.setPriority(Thread.MIN_PRIORITY);
-        this.thread.start();
+
         this.decorated.start(callback);
     }
 
