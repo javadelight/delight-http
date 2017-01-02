@@ -72,7 +72,7 @@ public class SafeShutdownGuard implements HttpService {
     @Override
     public void start(final SimpleCallback callback) {
         this.operationCounter = ServicesJre.createOperationCounter();
-        this.shutdownHelper = ServicesJre.createShutdownHelper(operationCounter);
+        this.shutdownHelper = ServicesJre.createShutdownHelper(decorated + "", operationCounter);
 
         this.decorated.start(callback);
     }
@@ -81,7 +81,7 @@ public class SafeShutdownGuard implements HttpService {
         super();
         this.decorated = decorated;
         this.operationCounter = ServicesJre.createOperationCounter();
-        this.shutdownHelper = ServicesJre.createShutdownHelper(operationCounter);
+        this.shutdownHelper = ServicesJre.createShutdownHelper(decorated + "", operationCounter);
     }
 
 }
