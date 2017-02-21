@@ -11,7 +11,7 @@ import de.mxro.httpserver.HttpService;
 import de.mxro.httpserver.Request;
 import de.mxro.httpserver.Response;
 
-public class ConcurrentWorkerThreadService implements HttpService {
+public final class ConcurrentWorkerThreadService implements HttpService {
 
     private final int maxThreads;
     private final HttpService decorated;

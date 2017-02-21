@@ -39,6 +39,7 @@ public final class Services {
 
     public static HttpService withParallelWorkerThreads(final String threadName, final int maxWorkers,
             final int timeout, final HttpService decorated) {
+
         return new ConcurrentWorkerThreadService(threadName, maxWorkers, timeout, decorated);
     }
 
