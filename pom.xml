@@ -2,7 +2,7 @@
 	+ GWT + in workspace dependencies 27.11.2010 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<artifactId>delight-http</artifactId>
 	<groupId>org.javadelight</groupId>
-	<version>0.0.11</version>
+	<version>0.1.0</version>
 	<description>A general API for building HTTP servers.
 	</description>
 	<url>https://github.com/javadelight/delight-http</url>
