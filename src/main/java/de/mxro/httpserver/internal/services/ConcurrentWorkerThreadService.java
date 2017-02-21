@@ -53,9 +53,8 @@ public class ConcurrentWorkerThreadService implements HttpService {
 
             @Override
             public void run() {
-                System.out.println("start");
+
                 decorated.process(request, response, callback);
-                System.out.println("stop");
 
             }
 
