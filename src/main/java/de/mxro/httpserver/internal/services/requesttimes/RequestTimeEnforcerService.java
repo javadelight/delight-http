@@ -13,7 +13,7 @@ import de.mxro.httpserver.Request;
 import de.mxro.httpserver.Response;
 import de.mxro.service.callbacks.ShutdownCallback;
 
-public class RequestTimeEnforcerService implements HttpService {
+public final class RequestTimeEnforcerService implements HttpService {
 
     private final HttpService decorated;
 
