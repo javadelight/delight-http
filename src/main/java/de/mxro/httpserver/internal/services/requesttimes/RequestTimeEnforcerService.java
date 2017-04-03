@@ -98,14 +98,6 @@ public final class RequestTimeEnforcerService implements HttpService {
 
     }
 
-    public RequestTimeEnforcerService(final long maxTime, final HttpService decorated) {
-        super();
-
-        this.decorated = decorated;
-        this.timeoutWatcher = new TimeoutWatcher(new JreConcurrency());
-        this.timeout = maxTime;
-    }
-
     @Override
     public String toString() {
         return super.toString() + " wraps " + this.decorated;
@@ -115,6 +107,14 @@ public final class RequestTimeEnforcerService implements HttpService {
     public void start(final SimpleCallback callback) {
 
         this.decorated.start(callback);
+    }
+
+    public RequestTimeEnforcerService(final long maxTime, final HttpService decorated) {
+        super();
+
+        this.decorated = decorated;
+        this.timeoutWatcher = new TimeoutWatcher(new JreConcurrency());
+        this.timeout = maxTime;
     }
 
 }
