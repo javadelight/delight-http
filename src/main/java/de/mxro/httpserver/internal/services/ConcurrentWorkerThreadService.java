@@ -1,15 +1,15 @@
 package de.mxro.httpserver.internal.services;
 
+import de.mxro.httpserver.HttpService;
+import de.mxro.httpserver.Request;
+import de.mxro.httpserver.Response;
 import delight.async.AsyncCommon;
 import delight.async.callbacks.SimpleCallback;
 import delight.concurrency.jre.JreConcurrency;
 import delight.concurrency.wrappers.SimpleExecutor;
 import delight.functional.Closure;
 import delight.functional.SuccessFail;
-
-import de.mxro.httpserver.HttpService;
-import de.mxro.httpserver.Request;
-import de.mxro.httpserver.Response;
+import delight.simplelog.Log;
 
 public final class ConcurrentWorkerThreadService implements HttpService {
 
@@ -45,7 +45,7 @@ public final class ConcurrentWorkerThreadService implements HttpService {
     public void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
 
         if (executor.pendingTasks() > 200) {
-            System.out.println(this + ": WARNING thread queue is getting long for " + threadName
+            Log.warn(this + ": WARNING thread queue is getting long for " + threadName
                     + ". Currently waiting: " + executor.pendingTasks());
         }
 
@@ -62,7 +62,7 @@ public final class ConcurrentWorkerThreadService implements HttpService {
 
             @Override
             public void run() {
-                System.err.println(this + ": Processing of service timed out. Service: " + decorated);
+                Log.warn(this + ": Processing of service timed out. Service: " + decorated);
 
                 response.setResponseCode(524);
                 response.setMimeType("text/plain");
