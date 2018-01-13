@@ -34,9 +34,11 @@ public class ResourceService implements HttpService {
                 final Resource resource = provider.getResource(requestUri);
 
                 if (resource != null) {
-                    response.setContent(resource.data());
+                    byte[] data = resource.data();
+					response.setContent(data);
                     response.setMimeType(resource.mimetype());
-
+                    	
+                    
                     final int maxCache = 60 * 60000;
                     // Cache Validation
                     final String ifModifiedSinceHeader = request.getHeader("If-Modified-Since");
@@ -60,13 +62,13 @@ public class ResourceService implements HttpService {
                     if (requestUri.contains(".nocache.")) {
                         // cache resources for at least 1 s
                         writeHeadersForCaching(response, 1000);
-
+                        response.setHeader("Content-Length", ""+data.length);
                         callback.apply(SuccessFail.success());
                         return;
                     } else {
 
                         writeHeadersForCaching(response, maxCache);
-
+                        response.setHeader("Content-Length", ""+data.length);	
                         callback.apply(SuccessFail.success());
                         return;
                     }
@@ -79,19 +81,21 @@ public class ResourceService implements HttpService {
                 }
             }
 
-            private void writeHeadersForCaching(final Response response, final int maxCache) {
-                final long now = System.currentTimeMillis();
-
-                response.setHeader("Expires", (now + maxCache) + "");
-                response.setHeader("Last-Modified", now + "");
-
-                // cache control 'public' is important for resources to
-                // be cached when SSL is used
-                response.setHeader("Cache-Control", "max-age=" + maxCache + ", public");
-            }
+            
         });
     }
+    
+    private void writeHeadersForCaching(final Response response, final int maxCache) {
+        final long now = System.currentTimeMillis();
 
+        response.setHeader("Expires", (now + maxCache) + "");
+        response.setHeader("Last-Modified", now + "");
+        
+        // cache control 'public' is important for resources to
+        // be cached when SSL is used
+        response.setHeader("Cache-Control", "max-age=" + maxCache + ", public");
+    }
+    
     @Override
     public void stop(final SimpleCallback callback) {
         this.executor.shutdown(new WhenExecutorShutDown() {
