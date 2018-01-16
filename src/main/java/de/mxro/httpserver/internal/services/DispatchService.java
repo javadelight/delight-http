@@ -21,7 +21,9 @@ public final class DispatchService implements HttpService {
 
     @Override
     public final void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
-        // TODO use more efficient data structure
+        
+    	
+    	// FIXME use more efficient data structure
         final String uri = request.getRequestUri();
         for (final Entry<String, HttpService> e : serviceMap.entrySet()) {
             if (uri.startsWith(e.getKey())) {
