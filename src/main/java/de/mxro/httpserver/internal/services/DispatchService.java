@@ -1,9 +1,5 @@
 package de.mxro.httpserver.internal.services;
 
-import delight.async.callbacks.SimpleCallback;
-import delight.functional.Closure;
-import delight.functional.SuccessFail;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,32 +8,49 @@ import java.util.Map.Entry;
 import de.mxro.httpserver.HttpService;
 import de.mxro.httpserver.Request;
 import de.mxro.httpserver.Response;
+import delight.async.callbacks.SimpleCallback;
+import delight.concurrency.Concurrency;
+import delight.functional.Closure;
+import delight.functional.SuccessFail;
+import delight.simplelog.Log;
+import delight.trie.TrieMap;
 
 public final class DispatchService implements HttpService {
-
+	
+	private final boolean ENABLE_TRACE = false;
+	
     private static final boolean ENABLE_LOG = false;
 
-    private final Map<String, HttpService> serviceMap;
+    private final TrieMap<HttpService> serviceMap;
 
     @Override
     public final void process(final Request request, final Response response, final Closure<SuccessFail> callback) {
         
-    	
-    	// FIXME use more efficient data structure
         final String uri = request.getRequestUri();
-        for (final Entry<String, HttpService> e : serviceMap.entrySet()) {
-            if (uri.startsWith(e.getKey())) {
-                e.getValue().process(request, response, callback);
-                return;
-            }
+        
+       
+        
+        
+        HttpService service = serviceMap.getValueForBestMatchingKey(uri);
+        if (ENABLE_TRACE) {
+        	Log.trace(this, "Processing URI: "+uri);
+        	Log.trace(this, "Found match: "+service);
         }
+        
+        if (service != null) {
+        	service.process(request, response, callback);
+        	return;
+        }
+        
+        
 
-        for (final Entry<String, HttpService> e : serviceMap.entrySet()) {
-            if (e.getKey().equals("*")) {
-                e.getValue().process(request, response, callback);
-                return;
-            }
+        HttpService defaultService = serviceMap.get("*");
+        if (defaultService != null) {
+        	defaultService.process(request, response, callback);
+        	return;
         }
+        
+        callback.apply(SuccessFail.fail(new Exception("No service defined for path ["+uri+"]")));
 
     }
 
@@ -81,9 +94,9 @@ public final class DispatchService implements HttpService {
         });
     }
 
-    public DispatchService(final Map<String, HttpService> serviceMap) {
+    public DispatchService(Concurrency conn, final Map<String, HttpService> serviceMap) {
         super();
-        this.serviceMap = serviceMap;
+        this.serviceMap = new TrieMap<HttpService>(conn, serviceMap);
     }
 
     @Override

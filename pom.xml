@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Template: Source 
-	+ GWT + in workspace dependencies 27.11.2010 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	+ GWT + in workspace dependencies 27.11.2010 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<artifactId>delight-http</artifactId>
 	<groupId>org.javadelight</groupId>
 	<version>0.1.0</version>
@@ -27,6 +29,19 @@
 			<artifactId>server-api</artifactId>
 			<version>0.0.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.javadelight</groupId>
+			<artifactId>delight-trie-map-java</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javadelight</groupId>
+			<artifactId>delight-state</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
 
 		<dependency>
 			<artifactId>java-ssl-utils</artifactId>
@@ -166,8 +181,8 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/META-INF/MANIFEST.MF"/>
-								<copy file="target/classes/META-INF/MANIFEST.MF" tofile="${basedir}/META-INF/MANIFEST.MF"/>
+								<delete file="${basedir}/META-INF/MANIFEST.MF" />
+								<copy file="target/classes/META-INF/MANIFEST.MF" tofile="${basedir}/META-INF/MANIFEST.MF" />
 							</tasks>
 						</configuration>
 					</execution>
@@ -352,7 +367,7 @@
 		</extensions>
 	</build>
 
-	
+
 
 	<repositories>
 		<repository>
@@ -377,6 +392,6 @@
 		</developer>
 	</developers>
 
-	
+
 
 </project>

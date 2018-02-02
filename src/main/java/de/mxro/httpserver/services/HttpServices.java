@@ -1,9 +1,5 @@
 package de.mxro.httpserver.services;
 
-import delight.async.Value;
-import delight.async.properties.PropertyNode;
-import delight.functional.Function;
-
 import java.util.Map;
 
 import de.mxro.httpserver.HttpService;
@@ -17,22 +13,32 @@ import de.mxro.httpserver.internal.services.ProxyService;
 import de.mxro.httpserver.internal.services.ResourceService;
 import de.mxro.httpserver.internal.services.SafeShutdownGuard;
 import de.mxro.httpserver.internal.services.ShutdownService;
+import de.mxro.httpserver.internal.services.StateService;
 import de.mxro.httpserver.internal.services.StaticDataService;
 import de.mxro.httpserver.internal.services.requesttimes.RequestTimeEnforcerService;
 import de.mxro.httpserver.internal.services.requesttimes.TrackRequestTimeService;
 import de.mxro.httpserver.resources.ResourceProvider;
 import de.mxro.server.ServerComponent;
+import delight.async.Value;
+import delight.async.properties.PropertyNode;
+import delight.concurrency.Concurrency;
+import delight.functional.Function;
+import delight.state.StateRegistry;
 
 public final class HttpServices {
 
-    public final static HttpService dispatcher(final Map<String, HttpService> serviceMap) {
-        return HttpServices.safeShutdown(new DispatchService(serviceMap));
+    public final static HttpService dispatcher(final Concurrency conn, final Map<String, HttpService> serviceMap) {
+        return HttpServices.safeShutdown(new DispatchService(conn, serviceMap));
     }
 
     public static HttpService safeShutdown(final HttpService service) {
         return new SafeShutdownGuard(service);
     }
 
+    public static HttpService state(String rootPath, StateRegistry registry) {
+    	return new StateService(rootPath, registry);
+    }
+    
     public static HttpService limitTime(final long maxCallTimeInMs, final HttpService decoratedService) {
         return new RequestTimeEnforcerService(maxCallTimeInMs, decoratedService);
     }
