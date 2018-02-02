@@ -23,10 +23,10 @@ import de.mxro.httpserver.internal.services.requesttimes.TrackRequestTimeService
 import de.mxro.httpserver.resources.ResourceProvider;
 import de.mxro.server.ServerComponent;
 
-public final class Services {
+public final class HttpServices {
 
     public final static HttpService dispatcher(final Map<String, HttpService> serviceMap) {
-        return Services.safeShutdown(new DispatchService(serviceMap));
+        return HttpServices.safeShutdown(new DispatchService(serviceMap));
     }
 
     public static HttpService safeShutdown(final HttpService service) {
