@@ -10,6 +10,7 @@ import de.mxro.httpserver.internal.services.EchoService;
 import de.mxro.httpserver.internal.services.FilterService;
 import de.mxro.httpserver.internal.services.PropertiesAsJSONService;
 import de.mxro.httpserver.internal.services.ProxyService;
+import de.mxro.httpserver.internal.services.RequireBasicAuthService;
 import de.mxro.httpserver.internal.services.ResourceService;
 import de.mxro.httpserver.internal.services.SafeShutdownGuard;
 import de.mxro.httpserver.internal.services.ShutdownService;
@@ -126,6 +127,10 @@ public final class HttpServices {
     public static HttpService shutdown(final String secret, final ServerComponent serverToShutdown,
             final Value<ServerComponent> ownServer) {
         return new ShutdownService(secret, serverToShutdown, ownServer);
+    }
+    
+    public static HttpService requireBasicAuth(final String userName, final String password, final HttpService decorated) {
+    	return new RequireBasicAuthService(userName, password, decorated);
     }
 
 }
