@@ -26,7 +26,13 @@ import delight.functional.Function;
 import delight.state.StateRegistry;
 
 public final class HttpServices {
-
+	
+	/**
+	 * Dispatches incoming calls based on a path to different services.
+	 * @param conn
+	 * @param serviceMap
+	 * @return
+	 */
     public final static HttpService dispatcher(final Concurrency conn, final Map<String, HttpService> serviceMap) {
         return HttpServices.safeShutdown(new DispatchService(conn, serviceMap));
     }
