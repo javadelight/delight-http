@@ -1,5 +1,6 @@
 package de.mxro.httpserver;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Response {
@@ -12,7 +13,7 @@ public interface Response {
 	 */
 	public void setContent(String content);
 	
-	
+
 	public void setResponseCode(int responseCode);
 	
 	public void setMimeType(String mimeType);
@@ -21,7 +22,10 @@ public interface Response {
 	
 	public void setHeader(String key, String value);
 	
-	public Map<String, String> getHeaders();
+	public void setHeader(String key, List<String> value);
+	
+	
+	public Map<String, List<String>> getHeaders();
 	
 	public int getResponseCode();
 	

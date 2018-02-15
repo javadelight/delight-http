@@ -1,8 +1,10 @@
 package de.mxro.httpserver.internal;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,8 +15,10 @@ public class ResponseData implements Response {
     private byte[] content;
     private int responseCode;
     String mimeType;
-    Map<String, String> headers;
-
+    Map<String, List<String>> headers;
+    
+    
+    
     @Override
     public byte[] getContent() {
         return content;
@@ -59,16 +63,24 @@ public class ResponseData implements Response {
     @Override
     public void setHeader(final String key, final String value) {
         if (headers == null) {
-            headers = new HashMap<String, String>();
+            headers = new HashMap<String, List<String>>();
         }
 
-        headers.put(key, value);
+        List<String> values = new ArrayList<String>(0);
+        values.add(value);
+        
+        setHeader(key, values);
     }
-
+    
     @Override
-    public Map<String, String> getHeaders() {
+	public void setHeader(String key, List<String> values) {
+    	headers.put(key, values);
+	}
+    
+    @Override
+    public Map<String, List<String>> getHeaders() {
         if (headers == null) {
-            headers = new HashMap<String, String>();
+            headers = new HashMap<String, List<String>>();
         }
         return headers;
     }
@@ -78,10 +90,10 @@ public class ResponseData implements Response {
         this.setContent(from.getContent());
         this.setMimeType(from.getMimeType());
         this.setResponseCode(from.getResponseCode());
-
+        
         this.headers.clear();
 
-        for (final Entry<String, String> e : from.getHeaders().entrySet()) {
+        for (final Entry<String, List<String>> e : from.getHeaders().entrySet()) {
             this.setHeader(e.getKey(), e.getValue());
         }
 
@@ -100,5 +112,9 @@ public class ResponseData implements Response {
         return "ResponseData [content=" + Arrays.toString(content) + ", responseCode=" + responseCode + ", mimeType="
                 + mimeType + ", headers=" + headers + "]";
     }
+
+	
+
+	
 
 }

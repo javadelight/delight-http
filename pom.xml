@@ -349,19 +349,7 @@
 
 		</resources>
 
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh-external</artifactId>
-				<version>2.5</version>
-			</extension>
-
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.5</version>
-			</extension>
-		</extensions>
+		
 	</build>
 
 
@@ -385,7 +373,7 @@
 			</roles>
 			<timezone>+10</timezone>
 			<organization>pureleap</organization>
-			<organizationUrl>http://pureleap.com</organizationUrl>
+			<organizationUrl>https://www.pureleap.com</organizationUrl>
 		</developer>
 	</developers>
 
