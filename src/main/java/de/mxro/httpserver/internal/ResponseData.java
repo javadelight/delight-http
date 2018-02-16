@@ -17,8 +17,6 @@ public class ResponseData implements Response {
     String mimeType;
     Map<String, List<String>> headers;
     
-    
-    
     @Override
     public byte[] getContent() {
         return content;
@@ -98,7 +96,13 @@ public class ResponseData implements Response {
         }
 
     }
-
+    
+    @Override
+    public String toString() {
+        return "ResponseData [content=" + Arrays.toString(content) + ", responseCode=" + responseCode + ", mimeType="
+                + mimeType + ", headers=" + headers + "]";
+    }
+    
     public ResponseData() {
         super();
         this.content = new byte[] {};
@@ -107,11 +111,7 @@ public class ResponseData implements Response {
         this.headers = null;
     }
 
-    @Override
-    public String toString() {
-        return "ResponseData [content=" + Arrays.toString(content) + ", responseCode=" + responseCode + ", mimeType="
-                + mimeType + ", headers=" + headers + "]";
-    }
+    
 
 	
 
